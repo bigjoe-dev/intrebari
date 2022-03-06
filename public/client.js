@@ -1,6 +1,7 @@
 let store = Immutable.Map({
     questions: Immutable.List([]),
-    activePage: 'home'
+    activePage: 'home',
+    getQuestion: false
 })
 
 const root = document.getElementById('root')
@@ -18,14 +19,20 @@ const render = async (root, state) => {
 // create content
 const App = (state) => {
     const { activePage } = state.toJS()
-    switch (activePage) {
+    return `<div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold">Întrebari</h1>
+    ${(() => {
+        switch (activePage) {
         case 'home':
             return `${homePage(state)}`
         case 'randomQuestion':
             return `${randomQuestions(state)}`
         default:
             return ``
-    }
+        }
+    })()}
+    </div>`
+
 }
 
 /*
@@ -34,8 +41,6 @@ TEMPLATES
 
 */
 const homePage = (state) => { return `
-<div class="px-4 py-5 my-5 text-center">
-    <h1 class="display-5 fw-bold">Întrebari</h1>
     <div class="col-lg-6 mx-auto">
       <p class="lead mb-4">O aplicație pentru a ne cunoaște prin întrebări aleatorii.</p>
       <p class="lead mb-4"><b>Este o lucare în curs.</b></p>
@@ -43,12 +48,16 @@ const homePage = (state) => { return `
         <button type="button" onclick="updateStore(store, { activePage: 'randomQuestion' })" class="btn btn-primary btn-lg px-4 gap-3">Începe</button>
       </div>
     </div>
-</div>
 `}
 
 const randomQuestions = (state) => {
     return `
-        <h1>random</h1>
+    <div class="card">
+        <div class="card-body" id="randomQuestion">
+            <br>
+        </div>
+        <button type="button" onclick="updateStore(store, { getQuestion: true })" class="btn btn-primary">Generați o întrebare</button>
+    </div>
     `
 }
 
