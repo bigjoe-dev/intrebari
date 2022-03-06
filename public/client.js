@@ -1,5 +1,6 @@
 let store = Immutable.Map({
-    questions: Immutable.List([])
+    questions: Immutable.List([]),
+    activePage: 'home'
 })
 
 const root = document.getElementById('root')
@@ -16,19 +17,38 @@ const render = async (root, state) => {
 
 // create content
 const App = (state) => {
-    return `
-    <div class="px-4 py-5 my-5 text-center">
-        <img class="d-block mx-auto mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-        <h1 class="display-5 fw-bold">Întrebari</h1>
-        <div class="col-lg-6 mx-auto">
-          <p class="lead mb-4">O aplicație pentru a ne cunoaște prin întrebări aleatorii.</p>
-          <p class="lead mb-4"><b>Este o lucare în curs.</b></p>
-          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Primary button</button>
-            <button type="button" class="btn btn-outline-secondary btn-lg px-4">Secondary</button>
-          </div>
-        </div>
+    const { activePage } = state.toJS()
+    switch (activePage) {
+        case 'home':
+            return `${homePage(state)}`
+        case 'randomQuestion':
+            return `${randomQuestions(state)}`
+        default:
+            return ``
+    }
+}
+
+/*
+
+TEMPLATES
+
+*/
+const homePage = (state) => { return `
+<div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold">Întrebari</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">O aplicație pentru a ne cunoaște prin întrebări aleatorii.</p>
+      <p class="lead mb-4"><b>Este o lucare în curs.</b></p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <button type="button" onclick="updateStore(store, { activePage: 'randomQuestion' })" class="btn btn-primary btn-lg px-4 gap-3">Începe</button>
       </div>
+    </div>
+</div>
+`}
+
+const randomQuestions = (state) => {
+    return `
+        <h1>random</h1>
     `
 }
 
