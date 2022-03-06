@@ -1,7 +1,7 @@
 let store = Immutable.Map({
-    questions: Immutable.List([]),
+    question: '',
     activePage: 'home',
-    getQuestion: false
+    reqQuestion: false
 })
 
 const root = document.getElementById('root')
@@ -18,7 +18,10 @@ const render = async (root, state) => {
 
 // create content
 const App = (state) => {
-    const { activePage } = state.toJS()
+    const { activePage, reqQuestion } = state.toJS()
+    if (reqQuestion === true) {
+        getQuestion(state)
+    }
     return `<div class="px-4 py-5 my-5 text-center">
     <h1 class="display-5 fw-bold">Întrebari</h1>
     ${(() => {
@@ -51,12 +54,13 @@ const homePage = (state) => { return `
 `}
 
 const randomQuestions = (state) => {
+    const { question } = state.toJS()
     return `
     <div class="card">
         <div class="card-body" id="randomQuestion">
-            <br>
+            <p>${question}</p>
         </div>
-        <button type="button" onclick="updateStore(store, { getQuestion: true })" class="btn btn-primary">Generați o întrebare</button>
+        <button type="button" onclick="updateStore(store, { reqQuestion: true })" class="btn btn-primary">Generați o întrebare</button>
     </div>
     `
 }
@@ -65,3 +69,15 @@ const randomQuestions = (state) => {
 window.addEventListener('load', () => {
     render(root, store)
 })
+
+/*
+
+  API CALLS
+
+*/
+
+const getQuestion = (state) => {
+    fetch(`${window.location.origin}/question`)
+        .then(res => res.json())
+        .then(question => updateStore(state, { question: question.intrebare, reqQuestion: false }))
+}
