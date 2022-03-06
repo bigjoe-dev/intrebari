@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/bigjoe-dev/intrebari/issues"
   },
-  "homepage": "https://github.com/bigjoe-dev/intrebari#readme"
+  "homepage": "https://github.com/bigjoe-dev/intrebari#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
 }
